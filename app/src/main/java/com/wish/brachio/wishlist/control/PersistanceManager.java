@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wish.brachio.wishlist.HomePage;
 import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.model.database.FirebaseUserHandler;
@@ -22,6 +23,7 @@ import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -30,17 +32,15 @@ public class PersistanceManager {
     public void signIn(String email, String password, final Activity activity){
         final FirebaseUserHandler handler = new FirebaseUserHandler();
         Task task1 = handler.signIn(email, password, activity);
-        task1.addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+        task1.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    //TODO way to get get all User info?
+                    //this will take user to main page on complete
                     handler.getSignedInUserInfo( activity );
-
-
                 }
             }
-        } );
+        });
     }
 
     public void registerUser(User user, String password, final Activity activity){

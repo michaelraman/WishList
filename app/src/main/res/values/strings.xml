@@ -18,4 +18,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_new_account">Create Your Account</string>
+    <string name="title_activity_home_page">Your Lists</string>
+    <string name="title_activity_your_wishlist">Your Wishlist</string>
+    <string name="title_activity_friend_lists">Explore Friends' Lists</string>
 </resources>
