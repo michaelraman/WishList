@@ -48,4 +48,8 @@ public class User {
     public void setFriends(HashMap<String, User> friends) {
         this.friends = friends;
     }
+
+    public boolean isNull() {
+        return (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty());
+    }
 }

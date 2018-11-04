@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.wish.brachio.wishlist.HubActivity;
+import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.model.database.FirebaseUserHandler;
 import com.wish.brachio.wishlist.model.User;
 
@@ -28,7 +29,17 @@ public class PersistanceManager {
         } );
     }
 
-    public void registerUser(User user){
-
+    public void registerUser(User user, String password, final Activity activity){
+        FirebaseUserHandler handler = new FirebaseUserHandler();
+        Task task = handler.registerUser( user, password, activity );
+        task.addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent(activity, LoginActivity.class);
+                    activity.startActivity(intent);
+                }
+            }
+        } );
     }
 }
