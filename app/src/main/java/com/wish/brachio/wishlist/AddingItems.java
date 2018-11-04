@@ -13,30 +13,45 @@ import android.widget.Button;
 
 import com.wish.brachio.wishlist.control.PersistanceManager;
 
-public class YourWishlistActivity extends AppCompatActivity {
+public class AddingItems extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_your_wishlist);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_adding_items);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Button friendButton = (Button) findViewById(R.id.imageButton6);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+
+
+        Button friendButton = (Button) findViewById(R.id.Save_Item);
         final Activity activity = this;
         friendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 PersistanceManager manager = new PersistanceManager();
                 manager.getFriendWishLists( activity, YourWishlistActivity.class);
-                attemptAddItem();
+                attemptViewFriendsWishList();
+
             }
         });
 
+
+
     }
 
-    private void attemptAddItem() {
-        Log.e("pls","Opening friends' lists");
-        Intent intent = new Intent(this, AddingItems.class);
+
+    private void attemptViewFriendsWishList() {
+        Log.e("pls","Adding new item");
+        Intent intent = new Intent(this, FriendListsActivity.class);
         startActivity(intent);
     }
 
