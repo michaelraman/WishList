@@ -23,10 +23,22 @@
         </activity>
         <activity
             android:name=".LoginActivity2"
-            android:label="@string/title_activity_login2"></activity>
+            android:label="@string/title_activity_login2" />
         <activity
             android:name=".HubActivity"
-            android:label="@string/title_activity_hub"></activity>
+            android:label="@string/title_activity_hub" />
+        <activity
+            android:name=".model.NewAccount"
+            android:label="@string/title_activity_new_account"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HomePage"
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".YourWishlist"
+            android:label="@string/title_activity_your_wishlist"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
