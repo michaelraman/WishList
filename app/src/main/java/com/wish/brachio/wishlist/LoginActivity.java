@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.wish.brachio.wishlist.control.PersistanceManager;
 
@@ -29,8 +30,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void attemptLogin() {
         PersistanceManager manager = new PersistanceManager();
-        EditText mLoginEmail = (EditText) findViewById(R.id.login_email);
-        EditText mLoginPassword = (EditText) findViewById(R.id.login_password);
+        TextView mLoginEmail = (TextView) findViewById(R.id.login_email);
+        TextView mLoginPassword = (TextView) findViewById(R.id.login_password);
         manager.signIn(mLoginEmail.getText().toString(), mLoginPassword.getText().toString(), this);
     }
 }
