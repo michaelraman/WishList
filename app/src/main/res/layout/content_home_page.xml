@@ -8,6 +8,45 @@
     tools:context=".HomePage"
     tools:showIn="@layout/activity_home_page">
 
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="42dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="78dp"
+        android:layout_marginBottom="111dp"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="?attr/actionModePasteDrawable" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="42dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="29dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:srcCompat="?attr/actionModePasteDrawable" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="42dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="77dp"
+        android:layout_marginBottom="38dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/actionModePasteDrawable"
+        tools:layout_editor_absoluteX="78dp" />
+
+    <ImageButton
+        android:id="@+id/imageButtonCreate"
+        android:layout_width="42dp"
+        android:layout_height="44dp"
+        app:srcCompat="?attr/actionModePasteDrawable"
+        tools:layout_editor_absoluteX="78dp"
+        tools:layout_editor_absoluteY="77dp" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
