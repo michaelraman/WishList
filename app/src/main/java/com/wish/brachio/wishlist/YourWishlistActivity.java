@@ -37,7 +37,7 @@ public class YourWishlistActivity extends AppCompatActivity {
         RecyclerView list = findViewById( R.id.your_wishlist );
         ArrayList<Item> items = new ArrayList();
         Item newItem = new Item("somename");
-
+        items.add(newItem);
         UserItemListAdapter adapter = (UserItemListAdapter) new UserItemListAdapter( items, new UserItemListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Item item) {
