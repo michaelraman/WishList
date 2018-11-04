@@ -10,7 +10,7 @@ public class User {
     private String email="";
     private String phone="";
     private HashMap<String, User> friends = new LinkedHashMap<>(  );
-    private HashMap<String, Wishlist> wishlist = new LinkedHashMap<>(  );
+    private Wishlist wishlist = new Wishlist();
 
     public User(){}
 
@@ -44,7 +44,7 @@ public class User {
         return friends;
     }
 
-    public HashMap<String, Wishlist> getWishlist() {
+    public Wishlist getWishlist() {
         return wishlist;
     }
 
@@ -72,7 +72,7 @@ public class User {
         this.friends = friends;
     }
 
-    public void setWishlist(HashMap<String, Wishlist> wishlist) {
+    public void setWishlist(Wishlist wishlist) {
         this.wishlist = wishlist;
     }
 

@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.wish.brachio.wishlist.HomePageActivity;
+import com.wish.brachio.wishlist.control.PersistanceManager;
 import com.wish.brachio.wishlist.model.Item;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.Wishlist;
@@ -67,11 +68,7 @@ public class FirebaseItemHandler {
                                 }
                                 */
 
-                                HashMap<String, Wishlist> wishHash = user.getWishlist();
-                                Wishlist wishlist = wishHash.get(wishKey);
-                                if (wishlist == null){
-                                    wishlist = new Wishlist();
-                                }
+                                Wishlist wishlist = user.getWishlist();
                                 wishlist.addItem(item);
                             }
                             Intent intent = new Intent(activity, HomePageActivity.class);
@@ -121,12 +118,15 @@ public class FirebaseItemHandler {
                                 }
                                 */
 
-                                HashMap<String, Wishlist> wishHash = user.getWishlist();
-                                Wishlist wishlist = wishHash.get(wishKey);
+                                Wishlist wishlist = user.getWishlist();
+
                                 if (wishlist == null){
                                     wishlist = new Wishlist();
                                 }
                                 wishlist.addItem(item);
+                                //Intent intent = new Intent(currentActivity, nextActivity);
+                                //currentActivity.startActivity(intent);
+
                             }
                             //Intent intent = new Intent(activity, HomePageActivity.class);
                             //activity.startActivity(intent);

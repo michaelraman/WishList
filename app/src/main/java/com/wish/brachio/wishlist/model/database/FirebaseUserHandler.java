@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wish.brachio.wishlist.FriendListsActivity;
 import com.wish.brachio.wishlist.HomePageActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.control.PersistanceManager;
@@ -267,7 +268,7 @@ public class FirebaseUserHandler {
                 });
     }
 
-    public Task getWishList(final User user, final PersistanceManager manager) {
+    public Task getWishList(final User user, final PersistanceManager manager, final Activity activity) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Task task = db.collection( "user" )
                 .whereEqualTo( "email", user.getEmail() )
@@ -286,15 +287,19 @@ public class FirebaseUserHandler {
                             if (wishHash != null) {
                                 wishNames = new ArrayList( wishHash.keySet() );
                                 for (String name : wishNames) {
+                                    user.getWishlist().setName(name);
                                     ArrayList<String> itemIds = new ArrayList( wishHash.values() );
                                     Task wishTask = handler.populateWishlists( user, itemIds, name );
                                     wishTask.addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                                            Intent intent = new Intent(activity, FriendListsActivity.class);
+                                            activity.startActivity(intent);
                                         }
                                     } );
                                 }
+                            } else {
+                                //PersistanceManager.friendCount--;
                             }
 
 

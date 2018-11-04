@@ -59,15 +59,17 @@ public class PersistanceManager {
         friendCount = friends.size();
         for (User user : friends){
             itemIDCallback.clear();
-            Task task = userHandler.getWishList( user, this );
+            Task task = userHandler.getWishList( user, this, activity);
             task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    friendCount--;
+                    /*
+                    //friendCount--;
                     if (friendCount == 0){
                         Intent intent = new Intent(activity, nextActivity);
                         activity.startActivity(intent);
                     }
+                    */
 
                 }
             });

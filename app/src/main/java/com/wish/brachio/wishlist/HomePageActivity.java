@@ -54,7 +54,9 @@ public class HomePageActivity extends AppCompatActivity {
         friendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 PersistanceManager manager = new PersistanceManager();
-                manager.getFriendWishLists( activity, FriendWishListActivity.class);
+                manager.getFriendWishLists( activity, FriendListsActivity.class);
+                //User user = CurrentUser.getInstance().getUser();
+
             }
         });
 
@@ -63,14 +65,9 @@ public class HomePageActivity extends AppCompatActivity {
 
         for (Map.Entry<String, User> item : friend.entrySet()) {
             String e = item.getKey();
-            HashMap<String, Wishlist> value = item.getValue().getWishlist();
-            for (Map.Entry<String, Wishlist> wish : value.entrySet()) {
-                String name = wish.getKey();
-                ArrayList<Item> items = wish.getValue().getItems();
-                Log.d("pls", name);
-                //Log.d("pls", items);
-            }
-            Log.d("pls", item.getKey());
+            Wishlist wish = item.getValue().getWishlist();
+            ArrayList<Item> items = wish.getItems();
+
         }
     }
 

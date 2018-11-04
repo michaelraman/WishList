@@ -35,7 +35,7 @@ public class WishlistActivity extends AppCompatActivity {
 
         User user = CurrentUser.getInstance().getUser();
         User friend = user.getFriends().get(email);
-        Wishlist wish = friend.getWishlist().get(wishname);
+        Wishlist wish = friend.getWishlist();
 
         name.setText(wishname);
         ArrayList<Item> items = wish.getItems();

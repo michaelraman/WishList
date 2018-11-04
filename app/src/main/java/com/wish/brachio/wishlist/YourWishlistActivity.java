@@ -60,7 +60,7 @@ public class YourWishlistActivity extends AppCompatActivity {
         UserItemListAdapter adapter = new YourWishlistActivity.UserItemListAdapter(items, new UserItemListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Item item) {
-                
+
             }
         });
 
