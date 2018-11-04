@@ -49,7 +49,9 @@ public class FirebaseItemHandler {
                                 Item item = new Item(key, name, quantity, date);
 
                                 //get contributors to wishlist
-                                HashMap<String, Boolean> userMap = (HashMap) document.get( "contributors" );
+                                String contributor = (String) document.get( "contributors" );
+                                item.setContributers( contributor);
+                                /*
                                 if (userMap != null){
                                     ArrayList<String> friendEmails = new ArrayList(userMap.keySet());
 
@@ -61,8 +63,9 @@ public class FirebaseItemHandler {
                                         User friend = friendMap.get(email);
                                         contributors.add(friend);
                                     }
-                                    item.setContributers( contributors );
+
                                 }
+                                */
 
                                 HashMap<String, Wishlist> wishHash = user.getWishlist();
                                 Wishlist wishlist = wishHash.get(wishKey);
@@ -100,7 +103,9 @@ public class FirebaseItemHandler {
                                 Item item = new Item(key, name, quantity, date);
 
                                 //get contributors to wishlist
-                                HashMap<String, Boolean> userMap = (HashMap) document.get( "contributors" );
+                                String contributors = (String)document.get( "contributors" );
+                                item.setContributers( contributors );
+                                /*
                                 if (userMap != null){
                                     ArrayList<String> friendEmails = new ArrayList(userMap.keySet());
 
@@ -114,6 +119,7 @@ public class FirebaseItemHandler {
                                     }
                                     item.setContributers( contributors );
                                 }
+                                */
 
                                 HashMap<String, Wishlist> wishHash = user.getWishlist();
                                 Wishlist wishlist = wishHash.get(wishKey);
@@ -158,6 +164,18 @@ public class FirebaseItemHandler {
                         Log.w(TAG, "Error adding user", e);
                     }
                 });
+        return task;
+    }
+
+    public Task addContributor(Item item, String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference doc = db.collection("item").document(item.getId());
+        Map<String, Object> itemMap = new HashMap<>();
+        itemMap.put("name", item.getItemName());
+        itemMap.put("contributor", email);
+        itemMap.put("date", item.getCreationDate());
+        itemMap.put("quantity", item.getQuantity());
+        Task task = doc.set(itemMap);
         return task;
     }
     }
