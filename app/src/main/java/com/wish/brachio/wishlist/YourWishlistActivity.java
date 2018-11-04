@@ -17,6 +17,7 @@ import android.widget.Button;
 
 import com.wish.brachio.wishlist.control.PersistanceManager;
 import android.widget.Adapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,17 +35,36 @@ public class YourWishlistActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+/*        Button fab = (Button) findViewById(R.id.imageButton6);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PersistanceManager manager = new PersistanceManager();
-                manager.getFriendWishLists( activity, YourWishlistActivity.class);
+                manager.getFriendWishLists(this, YourWishlistActivity.class);
                 attemptAddItem();
             }
+        });*/
+
+
+        ImageButton friendButton = (ImageButton) findViewById(R.id.imageButton6);
+        final Activity activity = this;
+        friendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                AddingItems();
+            }
         });
-        */
+
+
+        Button saveList = (Button) findViewById(R.id.button4);
+        //final Activity activity = this;
+        saveList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                SaveItem();
+            }
+        });
+
+
 
         RecyclerView recyclerView = findViewById( R.id.your_wishlist );
         ArrayList<Item> items = new ArrayList();
@@ -68,9 +88,22 @@ public class YourWishlistActivity extends AppCompatActivity {
 
     }
 
-    private void attemptAddItem() {
+/*    private void attemptAddItem() {
         Log.e("pls","Opening friends' lists");
         Intent intent = new Intent(this, AddingItems.class);
+        startActivity(intent);
+    }*/
+
+
+    private void AddingItems() {
+        Log.e("pls","Opening friends' lists");
+        Intent intent = new Intent(this, AddingItems.class);
+        startActivity(intent);
+    }
+
+    private void SaveItem() {
+        Log.e("pls","Opening friends' lists");
+        Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
     }
 

@@ -12,27 +12,39 @@
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="63dp"
+        android:layout_marginEnd="136dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Item Name"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="63dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="136dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Quantity"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="148dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
     <Button
         android:id="@+id/Save_Item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="255dp"
+        android:layout_marginBottom="222dp"
         android:text="Save Item"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="242dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
