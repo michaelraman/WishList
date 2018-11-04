@@ -23,9 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HubActivity"
-            android:label="@string/title_activity_hub" />
+
         <activity
             android:name=".model.NewAccount"
             android:label="@string/title_activity_new_account" />
@@ -47,10 +45,7 @@
             android:name=".AddingItems"
             android:label="@string/title_activity_adding_items"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".model.ExploreFriendsLists"
-            android:label="@string/title_activity_explore_friends_lists"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".WishlistActivity"></activity>
     </application>

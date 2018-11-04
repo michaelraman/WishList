@@ -29,5 +29,5 @@
     <!--<string name="title_activity_friend_lists">Friends</string>-->
 
 
-    <string name="title_activity_adding_items">AddingItems</string>
+    <string name="title_activity_adding_items">Add New Item</string>
 </resources>
