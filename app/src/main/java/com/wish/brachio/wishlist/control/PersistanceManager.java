@@ -19,6 +19,7 @@ import com.wish.brachio.wishlist.model.database.FirebaseItemHandler;
 import com.wish.brachio.wishlist.model.database.FirebaseUserHandler;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
+import com.wish.brachio.wishlist.model.singleton.FoundFriend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,6 +101,22 @@ public class PersistanceManager {
                 }
             });
         }
+    }
+
+    public void getUserByEmail(String email){
+        final FirebaseUserHandler handler = new FirebaseUserHandler();
+        Task task = handler.getUserByEmail( email );
+        task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                FoundFriend.getInstance().setUser( handler.userCallback);
+            }
+        });
+    }
+
+    public void addContributator(Item item, String email){
+        FirebaseItemHandler handler = new FirebaseItemHandler();
+        handler.addContributor( item, email );
     }
 
 

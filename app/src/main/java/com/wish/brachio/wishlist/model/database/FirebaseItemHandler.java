@@ -160,4 +160,16 @@ public class FirebaseItemHandler {
                 });
         return task;
     }
+
+    public Task addContributor(Item item, String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference doc = db.collection("item").document(item.getId());
+        Map<String, Object> itemMap = new HashMap<>();
+        itemMap.put("name", item.getItemName());
+        itemMap.put("contributor", email);
+        itemMap.put("date", item.getCreationDate());
+        itemMap.put("quantity", item.getQuantity());
+        Task task = doc.set(itemMap);
+        return task;
+    }
     }

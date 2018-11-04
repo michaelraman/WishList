@@ -2,13 +2,11 @@ package com.wish.brachio.wishlist.model.database;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -36,7 +34,7 @@ import java.util.Map;
 
 public class FirebaseUserHandler {
     private String TAG = "FirebaseUserHandler";
-    private User userCallback;
+    public  User userCallback;
     private HashMap<String, User> friendsCallback = new LinkedHashMap<>(  );
     public Task signIn(String email, String password, final Activity activity) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -323,6 +321,38 @@ public class FirebaseUserHandler {
         Task task = doc.set(wishMap);
         return task;
     }
+
+    public Task getUserByEmail(String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task task = db.collection( "user" ).whereEqualTo( "email", email )
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        String firstName = "";
+                        String lastName = "";
+                        String email = "";
+                        String phone = "";
+                        HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                firstName = (String) doc.get( "fname" );
+                                lastName = (String) doc.get( "lname" );
+                                email = (String) doc.get( "email" );
+                                phone = (String) doc.get( "phone" );
+                                userCallback= new User(firstName, lastName, email);
+                                if (!phone.isEmpty()) {
+                                    userCallback.setPhone(phone);
+                                }
+                            }
+
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        return task;
+    }
+
 
 
 }
