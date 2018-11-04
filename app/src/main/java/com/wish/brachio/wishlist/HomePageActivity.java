@@ -40,6 +40,15 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
+        Button mViewFriendsWishList = (Button) findViewById(R.id.button3);
+        mViewFriendsWishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptViewFriendsWishList();
+            }
+        });
+
+
         Button friendButton = (Button) findViewById(R.id.friends_list_button);
         final Activity activity = this;
         friendButton.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +62,12 @@ public class HomePageActivity extends AppCompatActivity {
     private void attemptCreateWishList() {
         Log.e("pls","Opening wishlist");
         Intent intent = new Intent(this, YourWishlistActivity.class);
+        startActivity(intent);
+    }
+
+    private void attemptViewFriendsWishList() {
+        Log.e("pls","Opening friends' lists");
+        Intent intent = new Intent(this, FriendListsActivity.class);
         startActivity(intent);
     }
 
