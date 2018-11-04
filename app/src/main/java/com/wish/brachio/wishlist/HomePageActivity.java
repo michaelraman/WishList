@@ -13,6 +13,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.wish.brachio.wishlist.control.PersistanceManager;
+import com.wish.brachio.wishlist.model.Item;
+import com.wish.brachio.wishlist.model.User;
+import com.wish.brachio.wishlist.model.Wishlist;
+import com.wish.brachio.wishlist.model.singleton.CurrentUser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -49,6 +57,21 @@ public class HomePageActivity extends AppCompatActivity {
                 manager.getFriendWishLists( activity, FriendWishListActivity.class);
             }
         });
+
+        User user = CurrentUser.getInstance().getUser();
+        HashMap<String, User> friend = user.getFriends();
+
+        for (Map.Entry<String, User> item : friend.entrySet()) {
+            String e = item.getKey();
+            HashMap<String, Wishlist> value = item.getValue().getWishlist();
+            for (Map.Entry<String, Wishlist> wish : value.entrySet()) {
+                String name = wish.getKey();
+                ArrayList<Item> items = wish.getValue().getItems();
+                Log.d("pls", name);
+                //Log.d("pls", items);
+            }
+            Log.d("pls", item.getKey());
+        }
     }
 
     private void attemptCreateWishList() {
