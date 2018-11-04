@@ -3,29 +3,14 @@ package com.wish.brachio.wishlist.control;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.wish.brachio.wishlist.HomePage;
-import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.model.database.FirebaseUserHandler;
 import com.wish.brachio.wishlist.model.User;
-import com.wish.brachio.wishlist.model.singleton.CurrentUser;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
 
 public class PersistanceManager {
     private String TAG = "PersistanceManager";

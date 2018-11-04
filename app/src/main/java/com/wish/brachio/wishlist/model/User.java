@@ -1,13 +1,15 @@
 package com.wish.brachio.wishlist.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class User {
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
-    private HashMap<String, User> friends;
+    private HashMap<String, User> friends = new LinkedHashMap<>(  );
+    private HashMap<String, Wishlist> wishlist = new LinkedHashMap<>(  );
 
     public User(){}
 
@@ -36,6 +38,10 @@ public class User {
         return friends;
     }
 
+    public HashMap<String, Wishlist> getWishlist() {
+        return wishlist;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -54,6 +60,10 @@ public class User {
 
     public void setFriends(HashMap<String, User> friends) {
         this.friends = friends;
+    }
+
+    public void setWishlist(HashMap<String, Wishlist> wishlist) {
+        this.wishlist = wishlist;
     }
 
     public boolean isNull() {

@@ -180,47 +180,79 @@ public class FirebaseUserHandler {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         int count = 0;
         friendsCallback.clear();
+        Task task;
         while (count < emails.size()) {
-            db.collection("user")
-                    .whereEqualTo( "email", emails.get(count) )
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            String firstName = "";
-                            String lastName = "";
-                            String email = "";
-                            String phone = "";
-                            HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
-                            if (task.isSuccessful()) {
-                                for (DocumentSnapshot doc : task.getResult()) {
-                                    firstName = (String) doc.get( "fname" );
-                                    lastName = (String) doc.get( "lname" );
-                                    email = (String) doc.get( "email" );
-                                    phone = (String) doc.get( "phone" );
-                                    User user = new User(firstName, lastName, email);
-                                    if (!phone.isEmpty()) {
-                                        user.setPhone(phone);
+            if (count == emails.size() - 1) {
+                task = db.collection("user")
+                        .whereEqualTo( "email", emails.get(count) )
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                String firstName = "";
+                                String lastName = "";
+                                String email = "";
+                                String phone = "";
+                                HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot doc : task.getResult()) {
+                                        firstName = (String) doc.get( "fname" );
+                                        lastName = (String) doc.get( "lname" );
+                                        email = (String) doc.get( "email" );
+                                        phone = (String) doc.get( "phone" );
+                                        User user = new User(firstName, lastName, email);
+                                        if (!phone.isEmpty()) {
+                                            user.setPhone(phone);
+                                        }
+                                        friendsCallback.put(email, user);
                                     }
-                                    friendsCallback.put(email, user);
-                                }
 
-                            } else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
+                                } else {
+                                    Log.w(TAG, "Error getting documents.", task.getException());
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+
             count++;
 
             if (count == emails.size()){
                 userCallback.setFriends(friendsCallback);
-                Intent intent = new Intent(activity, HubActivity.class);
-                activity.startActivity(intent);
+                getWishList( userCallback, activity);
             }
 
         }
 
 
+    }
+
+    public void getWishList(final User user, final Activity activity){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("user")
+                .whereEqualTo( "email", user.getEmail() )
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        HashMap<String, Boolean> wishHash = new LinkedHashMap<>(  );
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                wishHash = (HashMap<String, Boolean> )doc.get("wishlists");
+                            }
+                            FirebaseItemHandler handler = new FirebaseItemHandler();
+                            ArrayList<String> wishNames = new ArrayList(wishHash.keySet());
+                            for (String name : wishNames){
+                                ArrayList<String> itemIds = new ArrayList(wishHash.values());
+                                handler.addItemstoWishlists( user, itemIds, name, activity);
+                            }
+
+
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 
 
