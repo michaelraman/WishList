@@ -42,6 +42,11 @@
         android:label="@string/title_activity_friend_lists"
         android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FriendWishListActivity" />
+        <activity android:name=".RegistrationActivity" />
+        <activity
+            android:name=".AddingItems"
+            android:label="@string/title_activity_adding_items"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".model.ExploreFriendsLists"
             android:label="@string/title_activity_explore_friends_lists"
