@@ -19,17 +19,17 @@ public class HomePageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        setContentView(R.layout.content_home_page);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+/*
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         });  */
 
         ImageButton mCreateWishList = (ImageButton) findViewById(R.id.imageButton5);
@@ -40,21 +40,13 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
-        Button mViewFriendsWishList = (Button) findViewById(R.id.button3);
-        mViewFriendsWishList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptViewFriendsWishList();
-            }
-        });
-
 
         Button friendButton = (Button) findViewById(R.id.friends_list_button);
         final Activity activity = this;
         friendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 PersistanceManager manager = new PersistanceManager();
-                manager.getFriendWishLists( activity);
+                manager.getFriendWishLists( activity, FriendWishListActivity.class);
             }
         });
     }

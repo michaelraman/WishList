@@ -3,6 +3,7 @@ package com.wish.brachio.wishlist.control;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -12,10 +13,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.wish.brachio.wishlist.FriendWishListActivity;
 import com.wish.brachio.wishlist.LoginActivity;
+import com.wish.brachio.wishlist.model.Item;
+import com.wish.brachio.wishlist.model.Wishlist;
 import com.wish.brachio.wishlist.model.database.FirebaseItemHandler;
 import com.wish.brachio.wishlist.model.database.FirebaseUserHandler;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
+import com.wish.brachio.wishlist.model.singleton.FoundFriend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +29,7 @@ public class PersistanceManager {
     private String TAG = "PersistanceManager";
     public static ArrayList<String> itemIDCallback = new ArrayList();
     public static int friendCount = 0;
+    public static int itemCount = 0;
 
     public void signIn(String email, String password, final Activity activity){
         final FirebaseUserHandler handler = new FirebaseUserHandler();
@@ -42,19 +47,10 @@ public class PersistanceManager {
 
     public void registerUser(User user, String password, final Activity activity){
         FirebaseUserHandler handler = new FirebaseUserHandler();
-        Task task = handler.registerUser( user, password, activity );
-        task.addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(activity, LoginActivity.class);
-                    activity.startActivity(intent);
-                }
-            }
-        } );
+        handler.registerUser( user, password, activity );
     }
 
-    public void getFriendWishLists(final Activity activity){
+    public void getFriendWishLists(final Activity activity, final Class nextActivity){
         FirebaseItemHandler itemHandler = new FirebaseItemHandler();
         FirebaseUserHandler userHandler = new FirebaseUserHandler();
         User currentUser = CurrentUser.getInstance().getUser();
@@ -69,7 +65,7 @@ public class PersistanceManager {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     friendCount--;
                     if (friendCount == 0){
-                        Intent intent = new Intent(activity, FriendWishListActivity.class );
+                        Intent intent = new Intent(activity, nextActivity);
                         activity.startActivity(intent);
                     }
 
@@ -77,6 +73,50 @@ public class PersistanceManager {
             });
 
         }
+    }
+
+    public void addWishList(final User user, final Wishlist wishlist, final Activity currentActivity, final Class nextActivity){
+        ArrayList<Item> items = wishlist.getItems();
+        FirebaseItemHandler itemHandler = new FirebaseItemHandler();
+        final FirebaseUserHandler userHandler = new FirebaseUserHandler();
+        itemCount = items.size();
+        for (Item item : items){
+            Task task1 = itemHandler.addItem(item);
+            task1.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    itemCount--;
+                    if (itemCount == 0){
+                        Task task2 = userHandler.addWishList( user, wishlist );
+                        task2.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                Intent intent = new Intent(currentActivity, nextActivity);
+                                currentActivity.startActivity(intent);
+                            }
+                        });
+
+                    }
+
+                }
+            });
+        }
+    }
+
+    public void getUserByEmail(String email){
+        final FirebaseUserHandler handler = new FirebaseUserHandler();
+        Task task = handler.getUserByEmail( email );
+        task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                FoundFriend.getInstance().setUser( handler.userCallback);
+            }
+        });
+    }
+
+    public void addContributator(Item item, String email){
+        FirebaseItemHandler handler = new FirebaseItemHandler();
+        handler.addContributor( item, email );
     }
 
 

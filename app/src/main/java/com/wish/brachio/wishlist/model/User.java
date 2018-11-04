@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class User {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
+    private String id;
+    private String firstName="";
+    private String lastName="";
+    private String email="";
+    private String phone="";
     private HashMap<String, User> friends = new LinkedHashMap<>(  );
     private HashMap<String, Wishlist> wishlist = new LinkedHashMap<>(  );
 
@@ -18,6 +19,11 @@ public class User {
         lastName = l;
         email = e;
     }
+
+    public String getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -40,6 +46,10 @@ public class User {
 
     public HashMap<String, Wishlist> getWishlist() {
         return wishlist;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {
