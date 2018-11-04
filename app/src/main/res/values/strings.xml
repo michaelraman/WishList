@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WishList</string>
+    <string name="app_name">Friends</string>
 
     <string name="title_activity_hub">HubActivity</string>
     <string name="title_home">Home</string>
@@ -22,5 +22,14 @@
     <string name="title_activity_home_page">Your Lists</string>
     <string name="title_activity_your_wishlist">Your Wishlist</string>
     <string name="title_activity_friend_lists">Explore Friends\' Lists</string>
+
+
+    <!--<string name="title_activity_friend_lists">Friends</string>-->
+
+
+
+
+
+
     <string name="title_login" >Login</string>
 </resources>
