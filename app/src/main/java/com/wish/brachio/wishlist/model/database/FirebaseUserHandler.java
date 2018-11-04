@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.control.PersistanceManager;
 import com.wish.brachio.wishlist.model.User;
@@ -115,4 +116,46 @@ public class FirebaseUserHandler {
         return task;
     }
 
+    public Task getSignedInUserInfo(final Activity activity) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d( TAG, "email " + user.getEmail() );
+        Task task = null;
+        if (user == null) {
+            Log.d( TAG, "onFailure: Not signed it" );
+        } else {
+            task = db.collection( "users" ).whereEqualTo( "email", user.getEmail() )
+                    .get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot documentSnapshots) {
+                            if (documentSnapshots.isEmpty()) {
+                                Log.d( TAG, "onSuccess: LIST EMPTY" );
+                                return;
+                            } else {
+                                // Convert the whole Query Snapshot to a list
+                                // of objects directly! No need to fetch each
+                                // document.
+                                List<DocumentSnapshot> retDocs = documentSnapshots.getDocuments();
+                                Log.d( TAG, "onSuccess: " + retDocs.get( 0 ).getId() );
+
+                                String firstName = "";
+                                String lastName = "";
+                                String email = "";
+                                String phone = "";
+                                HashMap<String, Boolean> friendHash;
+                                for (DocumentSnapshot doc : retDocs) {
+                                    firstName = (String) doc.get( "fname" );
+                                    lastName = (String) doc.get( "lname" );
+                                    email = (String) doc.get( "email" );
+                                    phone = (String) doc.get( "phone" );
+                                    friendHash = (HashMap<String, Boolean>) doc.get( "friends" );
+                                }
+
+                                CurrentUser.getInstance().setUser( userCallback );
+                            }
+                        }
+                    } );
+        }
+        return task;
+    }
 }
