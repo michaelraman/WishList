@@ -17,19 +17,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wish.brachio.wishlist.HomePageActivity;
 import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
-import com.wish.brachio.wishlist.control.PersistanceManager;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class FirebaseUserHandler {
     private String TAG = "FirebaseUserHandler";
@@ -244,7 +242,14 @@ public class FirebaseUserHandler {
                             ArrayList<String> wishNames = new ArrayList(wishHash.keySet());
                             for (String name : wishNames){
                                 ArrayList<String> itemIds = new ArrayList(wishHash.values());
-                                handler.addItemstoWishlists( user, itemIds, name, activity);
+                                Task wishTask = handler.populateWishlists( user, itemIds, name, activity);
+                                wishTask.addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        Intent intent = new Intent(activity, HomePageActivity.class );
+                                        activity.startActivity(intent);
+                                    }
+                                } );
                             }
 
 

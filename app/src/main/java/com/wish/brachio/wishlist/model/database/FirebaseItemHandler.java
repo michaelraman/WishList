@@ -26,7 +26,7 @@ public class FirebaseItemHandler {
     private String TAG = "FirebaseItemHandler";
 
     //adds items into a wishlist owned by user
-    public void addItemstoWishlists(final User user, ArrayList<String> itemIds, final String wishKey, final Activity activity){
+    public Task populateWishlists(final User user, ArrayList<String> itemIds, final String wishKey, final Activity activity){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Task task = db.collection("item")
                 .get()
@@ -73,5 +73,6 @@ public class FirebaseItemHandler {
                         }
                     }
                 });
+            return task;
         }
     }
