@@ -42,6 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
+<<<<<<< HEAD
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
@@ -54,6 +55,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton5" />
 
+=======
+>>>>>>> 28f7fad8f54173d3c4a0db7d0e00afa81c1be141
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -107,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+<<<<<<< HEAD
         android:layout_marginTop="78dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
@@ -116,4 +120,12 @@
         app:layout_constraintHorizontal_bias="0.119"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+=======
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="Friends"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+>>>>>>> 28f7fad8f54173d3c4a0db7d0e00afa81c1be141
 </android.support.constraint.ConstraintLayout>
