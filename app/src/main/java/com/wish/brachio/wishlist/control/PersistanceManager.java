@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wish.brachio.wishlist.HomePage;
 import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.model.database.FirebaseUserHandler;
@@ -40,7 +41,7 @@ public class PersistanceManager {
                         @Override
                         public void onSuccess(QuerySnapshot documentSnapshots) {
 
-                            Intent intent = new Intent(activity, HubActivity.class);
+                            Intent intent = new Intent(activity, HomePage.class);
                             activity.startActivity(intent);
                         }
                     } );
