@@ -32,15 +32,15 @@
             android:label="@string/title_activity_new_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HomePage"
+            android:name=".HomePageActivity"
             android:label="@string/title_activity_home_page"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".YourWishlist"
+            android:name=".YourWishlistActivity"
             android:label="@string/title_activity_your_wishlist"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FriendLists"
+            android:name=".FriendListsActivity"
             android:label="@string/title_activity_friend_lists"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
