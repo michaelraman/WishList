@@ -9,6 +9,11 @@ public class User {
     private String phone;
     private HashMap<String, User> friends;
 
+    public User(String f, String l, String e){
+        firstName = f;
+        lastName = l;
+        email = e;
+    }
     public String getFirstName() {
         return firstName;
     }
