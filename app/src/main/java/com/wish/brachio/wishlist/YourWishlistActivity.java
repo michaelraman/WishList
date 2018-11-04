@@ -30,9 +30,6 @@ public class YourWishlistActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        Button friendButton = (Button) findViewById(R.id.imageButton6);
-        final Activity activity = this;
-        friendButton.setOnClickListener(new View.OnClickListener() {
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
