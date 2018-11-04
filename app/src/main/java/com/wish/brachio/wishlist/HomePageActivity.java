@@ -1,5 +1,6 @@
 package com.wish.brachio.wishlist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.wish.brachio.wishlist.control.PersistanceManager;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -46,8 +49,14 @@ public class HomePageActivity extends AppCompatActivity {
         });
 
 
-
-
+        Button friendButton = (Button) findViewById(R.id.friends_list_button);
+        final Activity activity = this;
+        friendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                PersistanceManager manager = new PersistanceManager();
+                manager.getFriendWishLists( activity);
+            }
+        });
     }
 
     private void attemptCreateWishList() {

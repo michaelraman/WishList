@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wish.brachio.wishlist.HomePageActivity;
 import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.control.PersistanceManager;
@@ -24,12 +25,10 @@ import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class FirebaseUserHandler {
     private String TAG = "FirebaseUserHandler";
@@ -244,7 +243,14 @@ public class FirebaseUserHandler {
                             ArrayList<String> wishNames = new ArrayList(wishHash.keySet());
                             for (String name : wishNames){
                                 ArrayList<String> itemIds = new ArrayList(wishHash.values());
-                                handler.addItemstoWishlists( user, itemIds, name, activity);
+                                Task wishTask = handler.populateWishlists( user, itemIds, name, activity);
+                                wishTask.addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        Intent intent = new Intent(activity, HomePageActivity.class );
+                                        activity.startActivity(intent);
+                                    }
+                                } );
                             }
 
 
@@ -253,6 +259,47 @@ public class FirebaseUserHandler {
                         }
                     }
                 });
+    }
+
+    public Task getWishList(final User user, final PersistanceManager manager){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task task = db.collection("user")
+                .whereEqualTo( "email", user.getEmail() )
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        HashMap<String, Boolean> wishHash = new LinkedHashMap<>(  );
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                wishHash = (HashMap<String, Boolean> )doc.get("wishlists");
+                            }
+                            FirebaseItemHandler handler = new FirebaseItemHandler();
+                            ArrayList<String> wishNames;
+                            if (wishHash != null){
+                                 wishNames = new ArrayList(wishHash.keySet());
+                                for (String name : wishNames){
+                                    ArrayList<String> itemIds = new ArrayList(wishHash.values());
+                                    Task wishTask = handler.populateWishlists( user, itemIds, name);
+                                    wishTask.addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                        }
+                                    } );
+                                }
+                            }
+
+
+
+
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        return task;
     }
 
 

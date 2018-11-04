@@ -7,28 +7,66 @@ import java.util.Date;
 
 public class Item {
 
-    String itemname = "Plates";
-    ArrayList<User> contributers;
+    private String id;
+    private String itemName;
+    private int quantity;
 
-    Calendar cal = Calendar.getInstance();
-    Date date = cal.getTime();
+    private ArrayList<User> contributers;
+    private Date creationDate;
+    private String link;
 
-    String id="this is an id";
+    public Item(String i, String n, int q, Date d){
+        id = i;
+        itemName = n;
+        quantity = q;
+        creationDate = d;
+    }
 
-    int contributors = 3;
+    public String getId() {
+        return id;
+    }
 
-    int quantityneeded = 4;
-    int slotsfilled = 3;
-    int availableslots = 1;
+    public String getItemName() {
+        return itemName;
+    }
 
-    String contributer1 = "Jessica Bule";
-    int amountcontributedby1 = 1;
+    public int getQuantity() {
+        return quantity;
+    }
 
-    String contributer2 = "Ty Johnson";
-    int amountcontributedby2 = 1;
+    public ArrayList<User> getContributers() {
+        return contributers;
+    }
 
-    String contributer3 = "Mattie B";
-    int amountcontributedby3 = 1;
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
+    public String getLink() {
+        return link;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setContributers(ArrayList<User> contributers) {
+        this.contributers = contributers;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 }

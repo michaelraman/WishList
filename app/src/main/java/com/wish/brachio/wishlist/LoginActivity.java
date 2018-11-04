@@ -1,7 +1,9 @@
 package com.wish.brachio.wishlist;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+
 
         //Todo use to sign in user (manager will take user to main page
 
