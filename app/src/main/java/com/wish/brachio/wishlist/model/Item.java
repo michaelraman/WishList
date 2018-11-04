@@ -15,6 +15,10 @@ public class Item {
     private Date creationDate;
     private String link;
 
+    public Item(String n){
+        itemName = n;
+    }
+
     public Item(String i, String n, int q, Date d){
         id = i;
         itemName = n;
