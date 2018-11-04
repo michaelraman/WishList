@@ -49,7 +49,9 @@ public class FirebaseItemHandler {
                                 Item item = new Item(key, name, quantity, date);
 
                                 //get contributors to wishlist
-                                HashMap<String, Boolean> userMap = (HashMap) document.get( "contributors" );
+                                String contributor = (String) document.get( "contributors" );
+                                item.setContributers( contributor);
+                                /*
                                 if (userMap != null){
                                     ArrayList<String> friendEmails = new ArrayList(userMap.keySet());
 
@@ -61,8 +63,9 @@ public class FirebaseItemHandler {
                                         User friend = friendMap.get(email);
                                         contributors.add(friend);
                                     }
-                                    item.setContributers( contributors );
+
                                 }
+                                */
 
                                 HashMap<String, Wishlist> wishHash = user.getWishlist();
                                 Wishlist wishlist = wishHash.get(wishKey);
@@ -100,7 +103,9 @@ public class FirebaseItemHandler {
                                 Item item = new Item(key, name, quantity, date);
 
                                 //get contributors to wishlist
-                                HashMap<String, Boolean> userMap = (HashMap) document.get( "contributors" );
+                                String contributors = (String)document.get( "contributors" );
+                                item.setContributers( contributors );
+                                /*
                                 if (userMap != null){
                                     ArrayList<String> friendEmails = new ArrayList(userMap.keySet());
 
@@ -114,6 +119,7 @@ public class FirebaseItemHandler {
                                     }
                                     item.setContributers( contributors );
                                 }
+                                */
 
                                 HashMap<String, Wishlist> wishHash = user.getWishlist();
                                 Wishlist wishlist = wishHash.get(wishKey);

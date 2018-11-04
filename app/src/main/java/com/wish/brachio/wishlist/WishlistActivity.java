@@ -1,83 +1,50 @@
 package com.wish.brachio.wishlist;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import com.wish.brachio.wishlist.control.PersistanceManager;
-import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.wish.brachio.wishlist.model.Item;
-
+import com.wish.brachio.wishlist.model.User;
+import com.wish.brachio.wishlist.model.Wishlist;
+import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
 
-public class YourWishlistActivity extends AppCompatActivity {
+public class WishlistActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_your_wishlist);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_wishlist );
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PersistanceManager manager = new PersistanceManager();
-                manager.getFriendWishLists( activity, YourWishlistActivity.class);
-                attemptAddItem();
-            }
-        });
-        */
+        ListView list = (ListView) findViewById( R.id.wish_item_list );
+        TextView name = (TextView) findViewById( R.id.wishtlist_name );
 
-        RecyclerView recyclerView = findViewById( R.id.your_wishlist );
-        ArrayList<Item> items = new ArrayList();
-        Item newItem = new Item("somename");
-        items.add(newItem);
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("user");
+        String wishname = intent.getStringExtra("wishlist");
 
-        recyclerView.setHasFixedSize(true);
+        User user = CurrentUser.getInstance().getUser();
+        User friend = user.getFriends().get(email);
+        Wishlist wish = friend.getWishlist().get(wishname);
 
-        // use a linear layout manager
-        RecyclerView.LayoutManager  layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        UserItemListAdapter adapter = new YourWishlistActivity.UserItemListAdapter(items, new UserItemListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Item item) {
-                
-            }
-        });
-
-        recyclerView.setAdapter( adapter );
+        name.setText(wishname);
+        ArrayList<Item> items = wish.getItems();
 
     }
-
-    private void attemptAddItem() {
-        Log.e("pls","Opening friends' lists");
-        Intent intent = new Intent(this, AddingItems.class);
-        startActivity(intent);
-    }
-
-    private static  class UserItemListAdapter extends RecyclerView.Adapter<YourWishlistActivity.UserItemListAdapter.ItemViewHolder>{
+    private static class ItemListAdapter extends RecyclerView.Adapter<WishlistActivity.ItemListAdapter.ItemViewHolder>{
         private ArrayList<Item> items;
         private View view;
-        private final YourWishlistActivity.UserItemListAdapter.OnItemClickListener theItemListener;
+        private final OnItemClickListener theItemListener;
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
@@ -94,7 +61,7 @@ public class YourWishlistActivity extends AppCompatActivity {
 
             }
 
-            public void bind(final Item theItem, final YourWishlistActivity.UserItemListAdapter.OnItemClickListener listener) {
+            public void bind(final Item theItem, final OnItemClickListener listener) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -110,7 +77,7 @@ public class YourWishlistActivity extends AppCompatActivity {
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public UserItemListAdapter(ArrayList<Item> array, YourWishlistActivity.UserItemListAdapter.OnItemClickListener listener) {
+        public ItemListAdapter(ArrayList<Item> array, OnItemClickListener listener) {
             this.items = array;
             this.theItemListener = listener;
         }
@@ -118,21 +85,21 @@ public class YourWishlistActivity extends AppCompatActivity {
         // Create new views (invoked by the layout manager)
         // Create new views (invoked by the layout manager)
         @Override
-        public YourWishlistActivity.UserItemListAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                                                             int viewType) {
+        public WishlistActivity.ItemListAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                                  int viewType) {
             // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_adapter, parent, false);
 
             view = v;
-            YourWishlistActivity.UserItemListAdapter.ItemViewHolder vh = new YourWishlistActivity.UserItemListAdapter.ItemViewHolder(v);
+            WishlistActivity.ItemListAdapter.ItemViewHolder vh = new WishlistActivity.ItemListAdapter.ItemViewHolder(v);
             return vh;
         }
 
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(YourWishlistActivity.UserItemListAdapter.ItemViewHolder holder, int position) {
+        public void onBindViewHolder(WishlistActivity.ItemListAdapter.ItemViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.nameText.setText(items.get(position).getItemName());
@@ -165,5 +132,4 @@ public class YourWishlistActivity extends AppCompatActivity {
         }
 
     }
-
 }
