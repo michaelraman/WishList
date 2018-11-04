@@ -40,14 +40,6 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
-        Button mViewFriendsWishList = (Button) findViewById(R.id.button3);
-        mViewFriendsWishList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptViewFriendsWishList();
-            }
-        });
-
 
         Button friendButton = (Button) findViewById(R.id.friends_list_button);
         final Activity activity = this;

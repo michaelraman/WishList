@@ -32,9 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity2"
-            android:label="@string/title_activity_login2" />
-        <activity
             android:name=".HubActivity"
             android:label="@string/title_activity_hub" />
         <activity
