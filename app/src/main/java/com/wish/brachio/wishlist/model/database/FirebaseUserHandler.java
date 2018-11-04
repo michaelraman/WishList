@@ -1,4 +1,4 @@
-package com.wish.brachio.wishlist.model;
+package com.wish.brachio.wishlist.model.database;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
