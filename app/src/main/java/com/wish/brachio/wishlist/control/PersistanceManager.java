@@ -120,6 +120,30 @@ public class PersistanceManager {
     }
 
 
+    public void addFriend(final User friend1, final User friend2) {
+        final FirebaseUserHandler handler = new FirebaseUserHandler();
+        HashMap<String, User> friends1 = friend1.getFriends();
+        friends1.put(friend2.getEmail(), friend2);
+
+        HashMap<String, User> friends2 = friend1.getFriends();
+        friends2.put(friend1.getEmail(), friend1);
+
+        Task task1 = handler.updateUser( friend1 );
+        task1.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Task task2 = handler.updateUser( friend2);
+                task2.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    }
+                });
+            }
+        });
+    }
+
+
 
 
 

@@ -354,5 +354,26 @@ public class FirebaseUserHandler {
     }
 
 
+    public Task updateUser(User appUser){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference doc = db.collection("user").document(appUser.getId());
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put( "firstname", appUser.getFirstName() );
+        userMap.put( "lastname", appUser.getLastName() );
+        userMap.put( "email", appUser.getEmail() );
+        userMap.put( "phone", appUser.getPhone() );
+
+        HashMap<String, User> map = appUser.getFriends();
+        ArrayList<String> array = new ArrayList(map.keySet());
+        HashMap<String, Boolean> storeMap = new LinkedHashMap<>(  );
+        for (String email : array){
+            storeMap.put( email, true );
+        }
+        userMap.put( "friends",  storeMap);
+        Task task = doc.set(userMap);
+        return task;
+    }
+
+
 
 }
