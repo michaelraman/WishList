@@ -133,7 +133,7 @@ public class FirebaseItemHandler {
         return task;
     }
 
-    public Task addItem(Item item){
+    public Task addItem(final Item item){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> itemMap = new HashMap<>();
         itemMap.put("name", item.getItemName());
@@ -150,6 +150,7 @@ public class FirebaseItemHandler {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        item.setId(documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
