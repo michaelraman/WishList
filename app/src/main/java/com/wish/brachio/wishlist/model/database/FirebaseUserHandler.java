@@ -2,11 +2,13 @@ package com.wish.brachio.wishlist.model.database;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -14,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,7 +24,9 @@ import com.wish.brachio.wishlist.HomePageActivity;
 import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.control.PersistanceManager;
+import com.wish.brachio.wishlist.model.Item;
 import com.wish.brachio.wishlist.model.User;
+import com.wish.brachio.wishlist.model.Wishlist;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
@@ -67,20 +72,20 @@ public class FirebaseUserHandler {
     }
 
 
-    public Task registerUser(User appUser, String password, final Activity activity) {
+    public void registerUser(User appUser, String password, final Activity activity) {
         // Write a message to the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseAuth auth = FirebaseAuth.getInstance();
 
         final Map<String, Object> userMap = new HashMap<>();
-        Task task = null;
-        if (!appUser.isNull() && !password.isEmpty()) {
+
+        if (!password.isEmpty()) {
             userMap.put( "firstname", appUser.getFirstName() );
             userMap.put( "lastname", appUser.getLastName() );
             userMap.put( "email", appUser.getEmail() );
             userMap.put( "phone", appUser.getPhone() );
             userMap.put( "friends", appUser.getFriends() );
-            task = auth.createUserWithEmailAndPassword( appUser.getEmail(), password )
+           auth.createUserWithEmailAndPassword( appUser.getEmail(), password )
                     .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -90,7 +95,7 @@ public class FirebaseUserHandler {
                                     Log.d( TAG, "Registered" );
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                                     if (auth.getUid() != null) {
-                                        db.collection( "users" ).document( auth.getCurrentUser().getUid() ).set( userMap )
+                                        db.collection( "user" ).document( auth.getCurrentUser().getUid() ).set( userMap )
                                                 .addOnSuccessListener( new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
@@ -112,10 +117,11 @@ public class FirebaseUserHandler {
                         }
                     } );
 
+
         } else {
             Log.e( TAG, "Entered null value" );
         }
-        return task;
+
     }
 
     public Task getSignedInUserInfo(final Activity activity) {
@@ -140,12 +146,14 @@ public class FirebaseUserHandler {
                                 List<DocumentSnapshot> retDocs = documentSnapshots.getDocuments();
                                 Log.d( TAG, "onSuccess: " + retDocs.get( 0 ).getId() );
 
+                                String id = "";
                                 String firstName = "";
                                 String lastName = "";
                                 String email = "";
                                 String phone = "";
                                 HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
                                 for (DocumentSnapshot doc : retDocs) {
+                                    id = doc.getId();
                                     firstName = (String) doc.get( "fname" );
                                     lastName = (String) doc.get( "lname" );
                                     email = (String) doc.get( "email" );
@@ -153,6 +161,7 @@ public class FirebaseUserHandler {
                                     friendHash = (HashMap<String, Boolean>) doc.get("friends");
                                 }
                                 userCallback = new User(firstName, lastName, email);
+                                userCallback.setId(id);
                                 if (!phone.isEmpty()){
                                     userCallback.setPhone(phone);
                                 }
@@ -261,27 +270,27 @@ public class FirebaseUserHandler {
                 });
     }
 
-    public Task getWishList(final User user, final PersistanceManager manager){
+    public Task getWishList(final User user, final PersistanceManager manager) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task task = db.collection("user")
+        Task task = db.collection( "user" )
                 .whereEqualTo( "email", user.getEmail() )
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                        HashMap<String, Boolean> wishHash = new LinkedHashMap<>(  );
+                        HashMap<String, Boolean> wishHash = new LinkedHashMap<>();
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot doc : task.getResult()) {
-                                wishHash = (HashMap<String, Boolean> )doc.get("wishlists");
+                                wishHash = (HashMap<String, Boolean>) doc.get( "wishlists" );
                             }
                             FirebaseItemHandler handler = new FirebaseItemHandler();
                             ArrayList<String> wishNames;
-                            if (wishHash != null){
-                                 wishNames = new ArrayList(wishHash.keySet());
-                                for (String name : wishNames){
-                                    ArrayList<String> itemIds = new ArrayList(wishHash.values());
-                                    Task wishTask = handler.populateWishlists( user, itemIds, name);
+                            if (wishHash != null) {
+                                wishNames = new ArrayList( wishHash.keySet() );
+                                for (String name : wishNames) {
+                                    ArrayList<String> itemIds = new ArrayList( wishHash.values() );
+                                    Task wishTask = handler.populateWishlists( user, itemIds, name );
                                     wishTask.addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -292,13 +301,27 @@ public class FirebaseUserHandler {
                             }
 
 
-
-
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.w( TAG, "Error getting documents.", task.getException() );
                         }
                     }
-                });
+                } );
+        return task;
+    }
+
+    public Task addWishList(User user, Wishlist wishlist){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference doc = db.collection("user").document(user.getId());
+        Map<String, Object> wishMap = new HashMap<>();
+        ArrayList<Item> items = wishlist.getItems();
+        HashMap<String, Boolean> itemHash = new LinkedHashMap<>(  );
+        for(Item item : items){
+            itemHash.put(item.getId(), true);
+        }
+        HashMap<String, HashMap<String, Boolean>> storeHash = new LinkedHashMap<>(  );
+        storeHash.put(wishlist.getName(), itemHash);
+        wishMap.put("wishlist", storeHash);
+        Task task = doc.set(wishMap);
         return task;
     }
 

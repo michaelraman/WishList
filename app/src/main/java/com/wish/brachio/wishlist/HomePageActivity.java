@@ -45,7 +45,7 @@ public class HomePageActivity extends AppCompatActivity {
         friendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 PersistanceManager manager = new PersistanceManager();
-                manager.getFriendWishLists( activity);
+                manager.getFriendWishLists( activity, FriendWishListActivity.class);
             }
         });
     }
