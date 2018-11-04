@@ -24,7 +24,9 @@ import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +34,7 @@ import java.util.Set;
 public class FirebaseUserHandler {
     private String TAG = "FirebaseUserHandler";
     private User userCallback;
+    private HashMap<String, User> friendsCallback;
     public Task signIn(String email, String password, final Activity activity) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Task task = null;
@@ -142,13 +145,22 @@ public class FirebaseUserHandler {
                                 String lastName = "";
                                 String email = "";
                                 String phone = "";
-                                HashMap<String, Boolean> friendHash;
+                                HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
                                 for (DocumentSnapshot doc : retDocs) {
                                     firstName = (String) doc.get( "fname" );
                                     lastName = (String) doc.get( "lname" );
                                     email = (String) doc.get( "email" );
                                     phone = (String) doc.get( "phone" );
                                     friendHash = (HashMap<String, Boolean>) doc.get( "friends" );
+
+                                }
+                                userCallback = new User(firstName, lastName, email);
+                                if (phone != null){
+                                    userCallback.setPhone(phone);
+                                }
+                                if (friendHash != null){
+                                    ArrayList<String> emails = new ArrayList<String>(friendHash.keySet());
+                                    Task friendTask = getFriends(emails);
                                 }
 
                                 CurrentUser.getInstance().setUser( userCallback );
@@ -158,4 +170,31 @@ public class FirebaseUserHandler {
         }
         return task;
     }
+
+    public Task getFriends(ArrayList<String> emails){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final int count = emails.size();
+        for(int i = 0; i < count; i++){
+            db.collection("user")
+                    .whereEqualTo( "email", emails.get(i))
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    
+
+                                }
+                            } else {
+                                Log.w(TAG, "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+
+    }
+
 }

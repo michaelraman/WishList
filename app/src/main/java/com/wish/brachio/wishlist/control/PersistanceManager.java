@@ -39,6 +39,7 @@ public class PersistanceManager {
                     task2.addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot documentSnapshots) {
+
                             Intent intent = new Intent(activity, HubActivity.class);
                             activity.startActivity(intent);
                         }
