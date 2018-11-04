@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         PersistanceManager manager = new PersistanceManager();
         EditText mLoginEmail = (EditText) findViewById(R.id.login_email);
         EditText mLoginPassword = (EditText) findViewById(R.id.login_password);
-
         manager.signIn(mLoginEmail.getText().toString(), mLoginPassword.getText().toString(), this);
     }
 }
