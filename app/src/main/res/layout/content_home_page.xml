@@ -40,7 +40,7 @@
         tools:layout_editor_absoluteX="78dp" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButtonCreate"
         android:layout_width="42dp"
         android:layout_height="44dp"
         app:srcCompat="?attr/actionModePasteDrawable"
