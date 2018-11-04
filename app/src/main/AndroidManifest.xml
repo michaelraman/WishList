@@ -14,14 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_login"
+            android:label="@string/title_login">
 
-
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +47,13 @@
             android:label="@string/title_activity_friend_lists"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FriendWishListActivity" />
+
+        <activity
+            android:name=".model.ExploreFriendsLists"
+            android:label="@string/title_activity_explore_friends_lists"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".RegistrationActivity"></activity>
+
     </application>
 
 </manifest>
