@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -35,11 +36,29 @@ public class HomePageActivity extends AppCompatActivity {
                 attemptCreateWishList();
             }
         });
+
+        Button mViewFriendsWishList = (Button) findViewById(R.id.button3);
+        mViewFriendsWishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptViewFriendsWishList();
+            }
+        });
+
+
+
+
     }
 
     private void attemptCreateWishList() {
         Log.e("pls","Opening wishlist");
         Intent intent = new Intent(this, YourWishlistActivity.class);
+        startActivity(intent);
+    }
+
+    private void attemptViewFriendsWishList() {
+        Log.e("pls","Opening friends' lists");
+        Intent intent = new Intent(this, FriendListsActivity.class);
         startActivity(intent);
     }
 

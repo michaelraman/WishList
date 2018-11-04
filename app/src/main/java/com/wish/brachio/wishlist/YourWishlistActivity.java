@@ -24,6 +24,7 @@ public class YourWishlistActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
     }
 
 }
