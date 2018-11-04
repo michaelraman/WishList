@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.wish.brachio.wishlist.HomePageActivity;
 import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
+import com.wish.brachio.wishlist.control.PersistanceManager;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
@@ -258,6 +259,47 @@ public class FirebaseUserHandler {
                         }
                     }
                 });
+    }
+
+    public Task getWishList(final User user, final PersistanceManager manager){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task task = db.collection("user")
+                .whereEqualTo( "email", user.getEmail() )
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        HashMap<String, Boolean> wishHash = new LinkedHashMap<>(  );
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                wishHash = (HashMap<String, Boolean> )doc.get("wishlists");
+                            }
+                            FirebaseItemHandler handler = new FirebaseItemHandler();
+                            ArrayList<String> wishNames;
+                            if (wishHash != null){
+                                 wishNames = new ArrayList(wishHash.keySet());
+                                for (String name : wishNames){
+                                    ArrayList<String> itemIds = new ArrayList(wishHash.values());
+                                    Task wishTask = handler.populateWishlists( user, itemIds, name);
+                                    wishTask.addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                        }
+                                    } );
+                                }
+                            }
+
+
+
+
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        return task;
     }
 
 
