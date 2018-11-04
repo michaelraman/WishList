@@ -28,6 +28,7 @@ public class PersistanceManager {
     private String TAG = "PersistanceManager";
     public static ArrayList<String> itemIDCallback = new ArrayList();
     public static int friendCount = 0;
+    public static int itemCount = 0;
 
     public void signIn(String email, String password, final Activity activity){
         final FirebaseUserHandler handler = new FirebaseUserHandler();
@@ -73,11 +74,31 @@ public class PersistanceManager {
         }
     }
 
-    public void addWishList(User user, Wishlist wishlist, Activity currentActivity, Class nextActivity){
+    public void addWishList(final User user, final Wishlist wishlist, final Activity currentActivity, final Class nextActivity){
         ArrayList<Item> items = wishlist.getItems();
         FirebaseItemHandler itemHandler = new FirebaseItemHandler();
+        final FirebaseUserHandler userHandler = new FirebaseUserHandler();
+        itemCount = items.size();
         for (Item item : items){
+            Task task1 = itemHandler.addItem(item);
+            task1.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    itemCount--;
+                    if (itemCount == 0){
+                        Task task2 = userHandler.addWishList( user, wishlist );
+                        task2.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                Intent intent = new Intent(currentActivity, nextActivity);
+                                currentActivity.startActivity(intent);
+                            }
+                        });
 
+                    }
+
+                }
+            });
         }
     }
 
