@@ -35,15 +35,9 @@ public class PersistanceManager {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //TODO way to get get all User info?
-                    Task task2 = handler.getSignedInUserInfo( activity );
-                    task2.addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot documentSnapshots) {
+                    handler.getSignedInUserInfo( activity );
 
-                            Intent intent = new Intent(activity, HubActivity.class);
-                            activity.startActivity(intent);
-                        }
-                    } );
+
                 }
             }
         } );

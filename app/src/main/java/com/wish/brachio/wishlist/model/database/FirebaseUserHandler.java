@@ -34,7 +34,7 @@ import java.util.Set;
 public class FirebaseUserHandler {
     private String TAG = "FirebaseUserHandler";
     private User userCallback;
-    private HashMap<String, User> friendsCallback;
+    private HashMap<String, User> friendsCallback = new LinkedHashMap<>(  );
     public Task signIn(String email, String password, final Activity activity) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Task task = null;
@@ -127,7 +127,7 @@ public class FirebaseUserHandler {
         if (user == null) {
             Log.d( TAG, "onFailure: Not signed it" );
         } else {
-            task = db.collection( "users" ).whereEqualTo( "email", user.getEmail() )
+            task = db.collection( "user" ).whereEqualTo( "email", user.getEmail() )
                     .get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot documentSnapshots) {
@@ -151,21 +151,20 @@ public class FirebaseUserHandler {
                                     lastName = (String) doc.get( "lname" );
                                     email = (String) doc.get( "email" );
                                     phone = (String) doc.get( "phone" );
-
+                                    friendHash = (HashMap<String, Boolean>) doc.get("friends");
                                 }
                                 userCallback = new User(firstName, lastName, email);
                                 if (!phone.isEmpty()){
                                     userCallback.setPhone(phone);
                                 }
+
+                                CurrentUser.getInstance().setUser( userCallback );
                                 if (friendHash != null){
-                                   Task friendTask =  getFriends(email);
-                                   friendTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            userCallback.setFriends(friendsCallback);
-                                            CurrentUser.getInstance().setUser( userCallback );
-                                        }
-                                    });
+                                    ArrayList<String> emails = new ArrayList(friendHash.keySet());
+                                    getFriends(emails, activity);
+                                } else {
+                                    Intent intent = new Intent(activity, HubActivity.class);
+                                    activity.startActivity(intent);
                                 }
 
 
@@ -177,38 +176,52 @@ public class FirebaseUserHandler {
     }
 
     //gets friends of user
-    public Task getFriends(String userEmail){
+    public void getFriends(ArrayList<String> emails, Activity activity){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Task task = db.collection("user/friends")
-                .whereEqualTo( "email", userEmail)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        String firstName = "";
-                        String lastName = "";
-                        String email = "";
-                        String phone = "";
-                        HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot doc : task.getResult()) {
-                                firstName = (String) doc.get( "fname" );
-                                lastName = (String) doc.get( "lname" );
-                                email = (String) doc.get( "email" );
-                                phone = (String) doc.get( "phone" );
-                                User user = new User(firstName, lastName, email);
-                                if (!phone.isEmpty()) {
-                                    user.setPhone(phone);
+        int count = 0;
+        friendsCallback.clear();
+        while (count < emails.size()) {
+            db.collection("user")
+                    .whereEqualTo( "email", emails.get(count) )
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            String firstName = "";
+                            String lastName = "";
+                            String email = "";
+                            String phone = "";
+                            HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot doc : task.getResult()) {
+                                    firstName = (String) doc.get( "fname" );
+                                    lastName = (String) doc.get( "lname" );
+                                    email = (String) doc.get( "email" );
+                                    phone = (String) doc.get( "phone" );
+                                    User user = new User(firstName, lastName, email);
+                                    if (!phone.isEmpty()) {
+                                        user.setPhone(phone);
+                                    }
+                                    friendsCallback.put(email, user);
                                 }
-                                friendsCallback.put(email, user);
+
+                            } else {
+                                Log.w(TAG, "Error getting documents.", task.getException());
                             }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
                         }
-                    }
-                });
-        return task;
+                    });
+            count++;
+
+            if (count == emails.size()){
+                userCallback.setFriends(friendsCallback);
+                Intent intent = new Intent(activity, HubActivity.class);
+                activity.startActivity(intent);
+            }
+
+        }
+
+
     }
+
 
 }
