@@ -15,6 +15,7 @@ import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.model.Item;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.Wishlist;
+import com.wish.brachio.wishlist.model.singleton.CurrentUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,9 +39,26 @@ public class FirebaseItemHandler {
                                 String key = document.getId();
                                 String name = document.getString( "name" );
                                 Date date = document.getDate( "date" );
-                                HashMap<String, Boolean> itemMap = (HashMap) document.get( "contributors" );
-                                //Changed with filled in item
-                                Item item = new Item();
+                                long q = (Long) document.get("quantity");
+                                int quantity = (int) q;
+                                Item item = new Item(key, name, quantity, date);
+
+                                //get contributors to wishlist
+                                HashMap<String, Boolean> userMap = (HashMap) document.get( "contributors" );
+                                if (userMap != null){
+                                    ArrayList<String> friendEmails = new ArrayList(userMap.keySet());
+
+                                    User currentUser = CurrentUser.getInstance().getUser();
+                                    HashMap<String, User> friendMap = currentUser.getFriends();
+
+                                    ArrayList<User> contributors = new ArrayList();
+                                    for(String email : friendEmails){
+                                        User friend = friendMap.get(email);
+                                        contributors.add(friend);
+                                    }
+                                    item.setContributers( contributors );
+                                }
+
                                 HashMap<String, Wishlist> wishHash = user.getWishlist();
                                 Wishlist wishlist = wishHash.get(wishKey);
                                 if (wishlist == null){
