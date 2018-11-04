@@ -160,7 +160,7 @@ public class FirebaseUserHandler {
                                 }
                                 if (friendHash != null){
                                     ArrayList<String> emails = new ArrayList<String>(friendHash.keySet());
-                                    Task friendTask = getFriends(emails);
+                                    getFriends(emails);
                                 }
 
                                 CurrentUser.getInstance().setUser( userCallback );
@@ -171,7 +171,7 @@ public class FirebaseUserHandler {
         return task;
     }
 
-    public Task getFriends(ArrayList<String> emails){
+    public void getFriends(ArrayList<String> emails){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         final int count = emails.size();
@@ -185,7 +185,7 @@ public class FirebaseUserHandler {
 
                             if (task.isSuccessful()) {
                                 for (DocumentSnapshot document : task.getResult()) {
-                                    
+
 
                                 }
                             } else {
