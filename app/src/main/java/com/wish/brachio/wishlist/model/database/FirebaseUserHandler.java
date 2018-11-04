@@ -151,19 +151,24 @@ public class FirebaseUserHandler {
                                     lastName = (String) doc.get( "lname" );
                                     email = (String) doc.get( "email" );
                                     phone = (String) doc.get( "phone" );
-                                    friendHash = (HashMap<String, Boolean>) doc.get( "friends" );
 
                                 }
                                 userCallback = new User(firstName, lastName, email);
-                                if (phone != null){
+                                if (!phone.isEmpty()){
                                     userCallback.setPhone(phone);
                                 }
                                 if (friendHash != null){
-                                    ArrayList<String> emails = new ArrayList<String>(friendHash.keySet());
-                                    Task friendTask = getFriends(emails);
+                                   Task friendTask =  getFriends(email);
+                                   friendTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            userCallback.setFriends(friendsCallback);
+                                            CurrentUser.getInstance().setUser( userCallback );
+                                        }
+                                    });
                                 }
 
-                                CurrentUser.getInstance().setUser( userCallback );
+
                             }
                         }
                     } );
@@ -171,30 +176,39 @@ public class FirebaseUserHandler {
         return task;
     }
 
-    public Task getFriends(ArrayList<String> emails){
+    //gets friends of user
+    public Task getFriends(String userEmail){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        final int count = emails.size();
-        for(int i = 0; i < count; i++){
-            db.collection("user")
-                    .whereEqualTo( "email", emails.get(i))
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                            if (task.isSuccessful()) {
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    
-
+        Task task = db.collection("user/friends")
+                .whereEqualTo( "email", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        String firstName = "";
+                        String lastName = "";
+                        String email = "";
+                        String phone = "";
+                        HashMap<String, Boolean> friendHash = new LinkedHashMap<>(  );
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                firstName = (String) doc.get( "fname" );
+                                lastName = (String) doc.get( "lname" );
+                                email = (String) doc.get( "email" );
+                                phone = (String) doc.get( "phone" );
+                                User user = new User(firstName, lastName, email);
+                                if (!phone.isEmpty()) {
+                                    user.setPhone(phone);
                                 }
-                            } else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
+                                friendsCallback.put(email, user);
                             }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
                         }
-                    });
-        }
-
+                    }
+                });
+        return task;
     }
 
 }

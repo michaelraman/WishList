@@ -9,6 +9,8 @@ public class User {
     private String phone;
     private HashMap<String, User> friends;
 
+    public User(){}
+
     public User(String f, String l, String e){
         firstName = f;
         lastName = l;
