@@ -17,7 +17,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_login">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,33 +26,28 @@
         <activity
             android:name=".HubActivity"
             android:label="@string/title_activity_hub" />
-
         <activity
             android:name=".model.NewAccount"
             android:label="@string/title_activity_new_account" />
         <activity
             android:name=".HomePageActivity"
-            android:label="@string/title_activity_home_page"/>
-
+            android:label="@string/title_activity_home_page" />
         <activity
             android:name=".YourWishlistActivity"
             android:label="@string/title_activity_your_wishlist" />
         <activity
             android:name=".FriendListsActivity"
             android:label="@string/title_activity_friend_lists" />
-
-
-        <activity android:name=".FriendWishListActivity"></activity>
-            android:label="@string/title_activity_friend_lists"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FriendWishListActivity" />
-
+        android:label="@string/title_activity_friend_lists"
+        android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FriendWishListActivity" />
         <activity
             android:name=".model.ExploreFriendsLists"
             android:label="@string/title_activity_explore_friends_lists"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".RegistrationActivity"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".WishlistActivity"></activity>
     </application>
 
 </manifest>

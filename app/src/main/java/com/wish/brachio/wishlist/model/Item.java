@@ -11,7 +11,7 @@ public class Item {
     private String itemName;
     private int quantity;
 
-    private ArrayList<User> contributers;
+    private String contributers;
     private Date creationDate;
     private String link;
 
@@ -34,7 +34,7 @@ public class Item {
         return quantity;
     }
 
-    public ArrayList<User> getContributers() {
+    public String getContributers() {
         return contributers;
     }
 
@@ -58,7 +58,7 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public void setContributers(ArrayList<User> contributers) {
+    public void setContributers(String contributers) {
         this.contributers = contributers;
     }
 
