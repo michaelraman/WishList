@@ -15,7 +15,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.wish.brachio.wishlist.HomePageActivity;
-import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.model.Item;
 import com.wish.brachio.wishlist.model.User;
 import com.wish.brachio.wishlist.model.Wishlist;

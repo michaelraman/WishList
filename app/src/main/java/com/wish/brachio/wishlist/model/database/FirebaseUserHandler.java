@@ -21,7 +21,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.wish.brachio.wishlist.HomePageActivity;
-import com.wish.brachio.wishlist.HubActivity;
 import com.wish.brachio.wishlist.LoginActivity;
 import com.wish.brachio.wishlist.control.PersistanceManager;
 import com.wish.brachio.wishlist.model.Item;
@@ -171,7 +170,7 @@ public class FirebaseUserHandler {
                                     ArrayList<String> emails = new ArrayList(friendHash.keySet());
                                     getFriends(emails, activity);
                                 } else {
-                                    Intent intent = new Intent(activity, HubActivity.class);
+                                    Intent intent = new Intent(activity, HomePageActivity.class);
                                     activity.startActivity(intent);
                                 }
 

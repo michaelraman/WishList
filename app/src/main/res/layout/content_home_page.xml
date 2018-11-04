@@ -42,18 +42,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="192dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="32dp"
-        android:text="View Friends' Lists"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton5" />
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="368dp"
@@ -105,17 +93,13 @@
         android:id="@+id/friends_list_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
 
-        android:layout_marginTop="78dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="3dp"
         android:layout_marginBottom="32dp"
         android:text="View Friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.119"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
